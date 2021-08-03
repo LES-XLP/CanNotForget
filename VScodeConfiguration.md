@@ -121,3 +121,35 @@
     ]
 }
 ```
+#### 多文件编译运行tasks.json
+```
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile" ,
+            "command": "gcc",
+            "args": [
+                "-o", // 指定输出文件名，不加该参数则默认输出a.exe，Linux下默认a.out
+                "${fileDirname}/${fileBasenameNoExtension}.exe",//选择输出的文件名称，和前面的${file}是对应的，一般默认的名称就是前面的${file}.exe
+                
+                "${file}", 
+                // 多文件编译部分
+                "${fileDirname}/Test2a.c",
+                "${fileDirname}/Test2b.c",
+                // "${fileDirname}/mul/mul.c",
+                // "${fileDirname}/dev/dev.c",  
+                "-g", // 生成和调试有关的信息
+                "-Wall", // 开启额外警告
+            ], 
+            "type": "shell", // process是把预定义变量和转义解析后直接全部传给command；shell相当于先打开shell再输入命令，所以args还会经过shell再解析一遍
+            "group": {
+            "kind": "build",
+            "isDefault": true // 不为true时ctrl shift B就要手动选择了
+            },
+            "problemMatcher":"$gcc"
+        }
+        
+    ]
+}
+```
